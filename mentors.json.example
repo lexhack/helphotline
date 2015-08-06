@@ -5,12 +5,16 @@
 	"name": "Bob McBobberson",
 	"rooms": [151, 152, 153, 155],
 	"contact": ["555-555-5555", "bob@example.com"],
-	"skills": ["Node JS", "Android", "Soldering", "General info"], 
+	"skills": ["Node JS", "Android", "Soldering", "General info"],
+	"present": 0,
+	"available": 0,
 }, 
 {
 	"name": "Jimmy Jimbo Jr.",
 	"rooms": [], // any room
 	"contact": ["jjj@example.com"],
-	"skills": ["C++", "Arduino"], 
+	"skills": ["C++", "Arduino"],
+	"present": 0,
+	"available": 0,
 }
 ]
