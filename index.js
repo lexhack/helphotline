@@ -1,5 +1,8 @@
 var express = require("express"); 
+var bodyParser = require("body-parser");
 var app = express(); 
+app.use(bodyParser.urlencoded({ extended: false }));
+
 
 var fs = require("fs"); 
 
@@ -48,8 +51,23 @@ app.get("/available", function(req, res) {
 	}); 
 }); 
 
-app.post("/", function(req, res) {
+app.post("/request", function(req, res) {
+	console.log(req.body);
+	var query = {}; 
+	if(req.body.skill) 
+		query["skills"] = req.body.skill; 
+	if(req.body.name) 
+		query["name"] = req.body.name; 
 
+	db.collection("mentors").find( query )
+	.each(function(err, doc) {
+		if(doc != null) {
+			console.log(doc.name);
+		} else {
+			res.json({"status": "success"}); 
+		}
+	});
+	}
 });
 
 var server = app.listen(3000, function() {
