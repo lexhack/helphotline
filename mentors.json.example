@@ -1,16 +1,14 @@
-// an example of a mentors.json file
-
 [
 {
 	"name": "Bob McBobberson",
 	"rooms": [151, 152, 153, 155],
 	"contact": ["555-555-5555", "bob@example.com"],
-	"skills": ["Node JS", "Android", "Soldering", "General info"], 
+	"skills": ["Node JS", "Android", "Soldering", "General info"]
 }, 
 {
 	"name": "Jimmy Jimbo Jr.",
-	"rooms": [], // any room
+	"rooms": [], 
 	"contact": ["jjj@example.com"],
-	"skills": ["C++", "Arduino"], 
+	"skills": ["C++", "Arduino", "Soldering"]
 }
 ]
