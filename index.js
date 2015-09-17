@@ -72,7 +72,8 @@ var updateAnnouncements = function(callback) {
 		    				console.log(err); 
 		    			}
 		    			else {
-		    				callback(); 
+						if(callback)
+		    					callback(); 
 		    			}
 		    		});
 		    	}
