@@ -1,15 +1,8 @@
-var client = require("twilio")(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
-var nodemailer = require("nodemailer");
-var transporter = nodemailer.createTransport({
-    service: 'Gmail',
-    auth: {
-        user: 'lexhackathon@gmail.com',
-        pass: process.env.GMAIL_PASS
-    }
-});
+//var client = require("twilio")(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+var sendgrid = require("sendgrid")(process.env.SENDGRID_API_KEY); 
 
 exports.notifyMentor = function(contactInfo, room, skill) {
-	client.messages.create({
+	/*client.messages.create({
 	    to: "339-223-8868",
 	    from: "+13399709476",
 	    body: "Help is needed with " + skill + " in room "+room+"."
@@ -17,5 +10,19 @@ exports.notifyMentor = function(contactInfo, room, skill) {
 	    if (error) {
 	        console.log(error.message);
 	    }
-	});
+	});*/
+	var mailOptions = {
+		from: "Mentor Hotline <info@lexhack.org>",
+		to: "3392238868@txt.att.net",
+		text: "Helped is needed with " + skill + " in room "+room+".",
+		subject: "Help request!",
+	}; 
+
+	sendgrid.send(mailOptions, function(err, info) {
+		if(err) {
+			console.log(err);
+		} else {
+			console.log("Great success!"); 
+		}
+	}); 
 }
