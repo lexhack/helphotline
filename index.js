@@ -39,7 +39,7 @@ db.once('open', function (callback) {
 		var mentors = JSON.parse(data); 
 
 		for(var i=0; i<mentors.length; i++) {
-			mentors[i]["available"] = true; 
+			mentors[i]["available"] = 0; 
 			mentors[i]["currentRoom"] = -1; 
 		}
 		db.collection("announcements").drop(); 
@@ -100,7 +100,6 @@ app.get("/announcements", function(req, res) {
 				updateAnnouncements(function() {
 					db.collection("announcements").find().each(function(err, doc) {
 						if(doc) {
-							console.log(doc); 
 							response.push(doc); 
 						}
 						else {
@@ -111,7 +110,6 @@ app.get("/announcements", function(req, res) {
 			} else {
 				db.collection("announcements").find().each(function(err, doc) {
 					if(doc) {
-						console.log(doc); 
 						response.push(doc); 
 					}
 					else {
@@ -156,15 +154,33 @@ app.post("/request", function(req, res) {
 	if(req.body.name) 
 		query["name"] = req.body.name; 
 
-	db.collection("mentors").find( query )
-	.each(function(err, doc) {
+	db.collection("mentors").findOne( { $query:  query, $orderby: { "available": 1}}, function(err, doc) {
 		if(doc != null) {
+			var id = doc._id; 
 			Messenger.notifyMentor(doc.contact, req.body.room, query["skills"]); 
 			console.log(doc.name);
+			db.collection("mentors").update({_id:id}, {$inc: {"available": 1}}, {upsert: true}, function(err) {
+				if(err) {
+					console.log(err); 
+				} else {
+					console.log("great success");
+					res.json(doc);  
+				}
+			}); 
 		} else {
-			res.json({"status": "success"}); 
+			res.json({"status": "no mentors found"}); 
 		}
 	});
+});
+
+app.post("/clear-mentor", function(req, res) {
+	var id = mongoose.Types.ObjectId(req.body.id);  
+	db.collection("mentors").update({_id: id}, {$inc: {"available": -1}}, {upsert: true}, function(err) {
+		if(err) {
+			console.log(err);
+		}
+	}); 
+	res.json({"status": "absolutely peachy"}); 
 });
 
 var server = app.listen(3000, function() {

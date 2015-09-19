@@ -13,7 +13,7 @@ exports.notifyMentor = function(contactInfo, room, skill) {
 	});*/
 	var mailOptions = {
 		from: "Mentor Hotline <info@lexhack.org>",
-		to: "3392238868@txt.att.net",
+		to: "noahm@moroze.com",
 		text: "Helped is needed with " + skill + " in room "+room+".",
 		subject: "Help request!",
 	}; 
