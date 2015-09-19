@@ -121,7 +121,7 @@ app.get("/announcements", function(req, res) {
 			}
 		}
 		else {
-			console.log("no fuckin object??"); 
+			console.log("error"); 
 		}
 	});
 }); 
