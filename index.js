@@ -66,11 +66,14 @@ var updateAnnouncements = function(callback) {
 		    	else {
 		    		var tweets = []; 
 		    		for(var i=0; i<data.length; i++) {
-		    			tweets.push({
-		    				body: data[i].text,
-		    				date: new Date(data[i].created_at),
-		    				timeLoaded: Date.now(),
-		    			}); 
+		    			var date = new Date(data[i].created_at);
+					if(date.getDate() == 19 && date.getMonth() == 8) {
+						tweets.push({
+		    					body: data[i].text,
+		    					date: date,
+		    					timeLoaded: Date.now(),
+		    				});
+					} 
 		    		}
 		    		Announcement.create(tweets, function(err) {
 		    			if(err) {
@@ -95,8 +98,13 @@ app.get("/announcements", function(req, res) {
 		if(err) {
 			console.log(err); 
 		}
-		else if(obj) {
-			if(Date.now() - obj.timeLoaded > 30000) {
+		else {
+			var dt = 30001; 
+			if(obj) {
+				dt = Date.now() - obj.timeLoaded;
+			}
+				
+			if(dt > 30000) {
 				updateAnnouncements(function() {
 					db.collection("announcements").find().each(function(err, doc) {
 						if(doc) {
@@ -118,9 +126,9 @@ app.get("/announcements", function(req, res) {
 				}); 
 			}
 		}
-		else {
-			console.log("error"); 
-		}
+		//else {
+		//	console.log("no announcements"); 
+		//}
 	});
 }); 
 
